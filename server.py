@@ -7,7 +7,10 @@ PORT = 8080
 def handle_client(client_socket):
 
     data = client_socket.recv(1024)
-    print("Received message from client:", data)
+
+    source_ip = client_socket.getpeername()[0]
+
+    print(f"Received message from client ({source_ip}): {data}")
     client_socket.sendall(data)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:

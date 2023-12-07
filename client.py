@@ -3,7 +3,7 @@ import socket
 def send_message(message):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
         # Connect to the server
-        client_socket.connect(("localhost", 8080))
+        client_socket.connect(("localhost", 8080)) # 192.168.101.
 
         # Send the message
         client_socket.sendall(message.encode())
