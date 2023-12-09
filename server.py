@@ -5,7 +5,7 @@ import socket
 app = Bottle()
 
 hostname = socket.gethostname()
-IP = socket.gethostbyname(hostname) # 192.168.101.
+IP = socket.gethostbyname_ex(hostname)[-1][-1] # 192.168.101.
 PORT = 8080
 actual_diary = os.path.dirname(__file__)
 upload_diary = os.path.join(actual_diary, 'upload/')
