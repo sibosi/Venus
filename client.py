@@ -1,7 +1,7 @@
 import requests
 import os
 
-diary = os.path.dirname(__file__)
+root_dir = os.path.dirname(__file__)
 IP = input('Enter the IP: ') # 192.168.101.
 PORT = 8080
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
     file_path = os.path.join(file)
 
     # Töltse fel a fájlt
-    success = upload_file(os.path.join(diary, file_path))
+    success = upload_file(os.path.join(root_dir, file_path))
 
     # Írja ki a sikert vagy a hibát
     if success:

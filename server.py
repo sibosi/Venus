@@ -1,9 +1,11 @@
 from bottle import Bottle, route, request
 import os
+import socket
 
 app = Bottle()
 
-IP = 'localhost' # 192.168.101.
+hostname = socket.gethostname()
+IP = socket.gethostbyname(hostname) # 192.168.101.
 PORT = 8080
 actual_diary = os.path.dirname(__file__)
 upload_diary = os.path.join(actual_diary, 'upload/')
