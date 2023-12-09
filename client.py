@@ -19,7 +19,8 @@ def upload_file(file_path):
 
 if __name__ == '__main__':
     # Adja meg a fájl elérési útját
-    file_path = os.path.join(diary, 'myfile.txt')
+    file = input('Enter the path of the file to upload: ')
+    file_path = os.path.join(file)
 
     # Töltse fel a fájlt
     success = upload_file(file_path)
