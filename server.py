@@ -3,6 +3,7 @@ import os
 
 app = Bottle()
 
+IP = 'localhost' # 192.168.101.
 PORT = 8080
 actual_diary = os.path.dirname(__file__)
 upload_diary = os.path.join(actual_diary, 'upload/')
@@ -20,4 +21,4 @@ def handle_upload():
     else:
         return 'Nincs fájl a kérésben.'
 
-app.run(host='localhost', port=PORT)
+app.run(host=IP, port=PORT)

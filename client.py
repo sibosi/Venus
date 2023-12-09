@@ -2,12 +2,13 @@ import requests
 import os
 
 diary = os.path.dirname(__file__)
+IP = input('Enter the IP: ') # 192.168.101.
 PORT = 8080
 
 
 def upload_file(file_path):
     # Készítsen HTTP POST kérést a szerverhez
-    request = requests.post(f'http://localhost:{PORT}/upload', files={'file': open(file_path, 'rb')})
+    request = requests.post(f'http://{IP}:{PORT}/upload', files={'file': open(file_path, 'rb')})
 
     # Ellenőrizze a válasz kódját
     if request.status_code == 200:
@@ -23,7 +24,7 @@ if __name__ == '__main__':
     file_path = os.path.join(file)
 
     # Töltse fel a fájlt
-    success = upload_file(file_path)
+    success = upload_file(os.path.join(diary, file_path))
 
     # Írja ki a sikert vagy a hibát
     if success:
