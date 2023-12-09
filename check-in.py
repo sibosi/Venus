@@ -1,1 +1,1 @@
-import test2
+import server

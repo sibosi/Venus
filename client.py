@@ -1,21 +1,31 @@
-import socket
+import requests
+import os
 
-def send_message(message):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-        # Connect to the server
-        client_socket.connect(("localhost", 8080)) # 192.168.101.
-
-        # Send the message
-        client_socket.sendall(message.encode())
-
-        # Receive the response
-        data = client_socket.recv(1024).decode()
-        print(f"Received message from server: {data}")
+diary = os.path.dirname(__file__)
+PORT = 8080
 
 
-if __name__ == "__main__":
-    # Get the message from the user
-    message = input("Enter the message: ")
+def upload_file(file_path):
+    # Készítsen HTTP POST kérést a szerverhez
+    request = requests.post(f'http://localhost:{PORT}/upload', files={'file': open(file_path, 'rb')})
 
-    # Send the message to the server
-    send_message(message)
+    # Ellenőrizze a válasz kódját
+    if request.status_code == 200:
+        # A fájl sikeresen feltöltésre került
+        return True
+    else:
+        # A fájl feltöltése sikertelen
+        return False
+
+if __name__ == '__main__':
+    # Adja meg a fájl elérési útját
+    file_path = os.path.join(diary, 'myfile.txt')
+
+    # Töltse fel a fájlt
+    success = upload_file(file_path)
+
+    # Írja ki a sikert vagy a hibát
+    if success:
+        print('A fájl sikeresen feltöltésre került.')
+    else:
+        print('A fájl feltöltése sikertelen.')

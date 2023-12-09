@@ -1,24 +1,23 @@
-import socket
-import threading
+from bottle import Bottle, route, request
+import os
 
-HOST = "0.0.0.0"
+app = Bottle()
+
 PORT = 8080
+actual_diary = os.path.dirname(__file__)
+upload_diary = os.path.join(actual_diary, 'upload/')
 
-def handle_client(client_socket):
 
-    data = client_socket.recv(1024)
+@app.route('/upload', method='POST')
+def handle_upload():
+    # Ellenőrizze, hogy a kérésben van-e fájl
+    if request.files.get('file'):
+        # Olvassa be a fájlt
+        file = request.files['file']
+        # Mentse a fájlt
+        file.save(upload_diary + file.filename)
+        return 'A fájl sikeresen feltöltésre került.'
+    else:
+        return 'Nincs fájl a kérésben.'
 
-    source_ip = client_socket.getpeername()[0]
-
-    print(f"Received message from client ({source_ip}): {data}")
-    client_socket.sendall(data)
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-    server_socket.bind((HOST, PORT))
-    server_socket.listen()
-
-    while True:
-        client_socket, client_address = server_socket.accept()
-        thread = threading.Thread(target=handle_client, args=(client_socket,))
-        thread.start()
-        server_socket.listen()
+app.run(host='localhost', port=PORT)
