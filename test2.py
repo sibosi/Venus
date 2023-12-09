@@ -1,3 +1,6 @@
 print('Test: ', __file__)
 
-print('Test done')
+while True:
+    pass
+
+print(f'Test ({__file__}) done')
