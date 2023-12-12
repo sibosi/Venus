@@ -1,0 +1,15 @@
+{
+    "NETWORKS" : {
+        "SERVER1" : {
+            "IP" : null,
+            "PORT" : 8082,
+            "PUBLIC" : true
+        },
+
+        "UPDATE" : {
+            "IP" : null,
+            "PORT" : 8080,
+            "PUBLIC" : false
+        }
+    }
+}
