@@ -1,4 +1,8 @@
 {
+    "update logging" : true,
+    "update printing" : false,
+    "check-in after update" : false,
+
     "NETWORKS" : {
         "SERVER1" : {
             "IP" : null,
