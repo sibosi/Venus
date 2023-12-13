@@ -1,10 +1,10 @@
 # Venus
-Szerver - kliens projekt egy Raspberry Pi-n.
+Gyakorlóprojekt, egy szerver - kliens projekt egy Raspberry Pi-hez.
 
-A szerver üzenet és fájl fogadásra alkalmas.
+A szerver üzenetek és fájlok fogadására alkalmas.
 
 ## Használat
-- `setup.py` - létrehozza a szükséges mappákat, fájlokat.
+- `setup.py` - létrehozza a szükséges mappákat, fájlokat
 
 - `update.py` - frissíti a file-okat a GitHub-ról
 
