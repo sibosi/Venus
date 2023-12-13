@@ -9,8 +9,18 @@ class NETWORK():
     local_ip = socket.gethostbyname_ex(hostname)[-1][-1]
     localhost = 'localhost'
     
-    def __init__(self, IP: str, PORT: int, upload_directory_name='upload/', network_name='Nothing.') -> None:
+    def __init__(self, IP=None, PORT=None, upload_directory_name='upload/', network_name='Nothing.') -> None:
         self.app = Bottle()  # A Bottle alkalmazást a konstruktorban hozzuk létre
+        
+        if IP == None:
+            IP = input('Enter the type of the IP ["localhost" or "local"]: ')
+            if IP == "localhost":
+                IP = NETWORK.localhost
+            elif IP == "local":
+                IP = NETWORK.local_ip
+        if PORT == None:
+            PORT = int(input('Enter the PORT: '))
+        
         self.IP = IP
         self.PORT = PORT
         self.upload_directory_name = upload_directory_name
@@ -50,4 +60,4 @@ class NETWORK():
                 return 'A kérésben nem volt szöveg.'
 
 if __name__ == "__main__":
-    NETWORK(NETWORK.localhost, 8080).run()
+    NETWORK().run()

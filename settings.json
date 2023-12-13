@@ -15,5 +15,10 @@
             "PORT" : 8080,
             "PUBLIC" : false
         }
+    },
+
+    "ANSWERS" : {
+        "yes" : ["y", "yes", "igen"],
+        "no" : ["n", "no", "nem"]
     }
 }

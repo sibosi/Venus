@@ -68,5 +68,5 @@ class CLIENT():
 
 
 if __name__ == '__main__':
-    client1 = CLIENT('localhost', 8080)
+    client1 = CLIENT()
     client1.run()
