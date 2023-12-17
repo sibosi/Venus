@@ -1,4 +1,3 @@
-from email import message
 import requests
 import os
 
@@ -10,7 +9,7 @@ class CLIENT():
         if IP == None:
             IP = input('Enter the IP: ')
         if PORT == None:
-            IP = input('Enter the PORT: ')
+            PORT = int(input('Enter the PORT: '))
         
         self.IP = IP
         self.PORT = PORT
@@ -41,6 +40,7 @@ class CLIENT():
             message = input('Send a message: ')
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
         client_socket.connect((self.IP, self.PORT))
 
         # A kérés felépítése HTTP POST kérés formájában
@@ -63,10 +63,10 @@ class CLIENT():
                 self.upload_file()
             else:
                 self.chat()
-            valasz = input('Chat or file sending (c or s)')
+            valasz = input('Chat or file sending (c or f)')
             
 
 
 if __name__ == '__main__':
-    client1 = CLIENT()
+    client1 = CLIENT("localhost", 8082)
     client1.run()

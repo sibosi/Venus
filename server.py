@@ -1,8 +1,13 @@
-from bottle import Bottle, request
 import os
 import socket
+# import bottle
+from flask import Flask, render_template, url_for, request
+
+
 
 actual_directory = os.path.dirname(__file__)
+page_directory = os.path.join(actual_directory, 'page/')
+os.chdir(actual_directory)
 
 class NETWORK():
     hostname = socket.gethostname()
@@ -10,8 +15,12 @@ class NETWORK():
     localhost = 'localhost'
     
     def __init__(self, IP=None, PORT=None, upload_directory_name='upload/', network_name='Nothing.') -> None:
-        self.app = Bottle()  # A Bottle alkalmazást a konstruktorban hozzuk létre
-        
+        # self.bottle = bottle
+        # self.app = self.bottle.Bottle()
+        self.app = Flask(__name__, template_folder=page_directory, static_folder=page_directory)
+        self.app.config['ENV'] = 'production'
+        self.app.config['DEBUG'] = False
+
         if IP == None:
             IP = input('Enter the type of the IP ["localhost" or "local"]: ')
             if IP == "localhost":
@@ -32,7 +41,12 @@ class NETWORK():
 
     def setup_routes(self):
         # A metóduson belül értelmezzük a route-okat
-        @self.app.route('/upload', method='POST')
+        @self.app.route("/")
+        def index():
+            #full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'shovon.jpg')
+            return render_template("index.html")
+
+        @self.app.route('/upload', methods=['POST'])
         def handle_upload():
             # Ellenőrizze, hogy a kérésben van-e fájl
             if request.files.get('file'):
@@ -48,16 +62,16 @@ class NETWORK():
             else:
                 return 'Nincs fájl a kérésben.'
 
-        @self.app.route('/chat', method='POST')
-        def handlem_chat():
+        @self.app.route('/chat', methods=['POST'])
+        def handle_chat():
             # Ellenőrizze, hogy a kérésben van-e szöveg
             if request.headers['Content-Type'] == 'text/plain':
                 # A kérésben szöveg van
-                data = request.body.read().decode()
+                data = request.get_data(as_text=True)
                 print(f"Kapott üzenet: {data}")
                 return 'A kérésben {0} van.'.format(data)
             else:
                 return 'A kérésben nem volt szöveg.'
 
 if __name__ == "__main__":
-    NETWORK().run()
+    NETWORK('localhost', 8082).run()

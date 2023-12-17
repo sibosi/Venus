@@ -2,7 +2,7 @@ import os
 import sys
 
 required_directories = ['storage', 'upload']
-packages = ["bottle"]
+packages = ["bottle", "flask"]
 
 
 repo_path = os.path.dirname(__file__)
