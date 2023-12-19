@@ -1,6 +1,5 @@
 import os
 import socket
-# import bottle
 from flask import Flask, render_template, url_for, request
 
 
@@ -14,12 +13,11 @@ class NETWORK():
     local_ip = socket.gethostbyname_ex(hostname)[-1][-1]
     localhost = 'localhost'
     
-    def __init__(self, IP=None, PORT=None, upload_directory_name='upload/', network_name='Nothing.') -> None:
-        # self.bottle = bottle
-        # self.app = self.bottle.Bottle()
+    def __init__(self, IP=None, PORT=None, upload_directory_name='upload/', network_name='Nothing.', DEBUG = False) -> None:
+        # print(socket.gethostbyname_ex(NETWORK.hostname))
         self.app = Flask(__name__, template_folder=page_directory, static_folder=page_directory)
-        self.app.config['ENV'] = 'production'
-        self.app.config['DEBUG'] = False
+        if DEBUG: self.app.config['ENV'] = 'production'
+        self.app.config['DEBUG'] = DEBUG
 
         if IP == None:
             IP = input('Enter the type of the IP ["localhost" or "local"]: ')
@@ -74,4 +72,4 @@ class NETWORK():
                 return 'A kérésben nem volt szöveg.'
 
 if __name__ == "__main__":
-    NETWORK('localhost', 8082).run()
+    NETWORK(PORT=8082, IP='0.0.0.0').run()
