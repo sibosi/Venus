@@ -1,15 +1,24 @@
 {
+    "update logging" : true,
+    "update printing" : false,
+    "check-in after update" : false,
+
     "NETWORKS" : {
         "SERVER1" : {
-            "IP" : null,
+            "IP" : "0.0.0.0",
             "PORT" : 8082,
             "PUBLIC" : true
         },
 
         "UPDATE" : {
-            "IP" : null,
+            "IP" : "localhost",
             "PORT" : 8080,
             "PUBLIC" : false
         }
+    },
+
+    "ANSWERS" : {
+        "yes" : ["y", "yes", "igen"],
+        "no" : ["n", "no", "nem"]
     }
 }

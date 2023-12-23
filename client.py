@@ -1,4 +1,3 @@
-from email import message
 import requests
 import os
 
@@ -6,11 +5,11 @@ root_dir = os.path.dirname(__file__)
 
 
 class CLIENT():
-    def __init__(self, IP=None, PORT=None) -> None:
+    def __init__(self, IP='localhost', PORT=None) -> None:
         if IP == None:
             IP = input('Enter the IP: ')
         if PORT == None:
-            IP = input('Enter the PORT: ')
+            PORT = int(input('Enter the PORT: '))
         
         self.IP = IP
         self.PORT = PORT
@@ -41,7 +40,12 @@ class CLIENT():
             message = input('Send a message: ')
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((self.IP, self.PORT))
+        
+        try:
+            client_socket.connect((self.IP, self.PORT))
+        except ConnectionRefusedError:
+            print('ConnectionRefusedError: Nem hozható létre kapcsolat, mert a célszámítógép már visszautasította a kapcsolatot.')
+            exit()
 
         # A kérés felépítése HTTP POST kérés formájában
         request = f'POST /chat HTTP/1.1\r\nContent-Type: text/plain\r\nContent-Length: {len(message)}\r\n\r\n{message}'
@@ -63,10 +67,10 @@ class CLIENT():
                 self.upload_file()
             else:
                 self.chat()
-            valasz = input('Chat or file sending (c or s)')
+            valasz = input('Chat or file sending (c or f)')
             
 
 
 if __name__ == '__main__':
-    client1 = CLIENT('localhost', 8080)
+    client1 = CLIENT(PORT=8082)
     client1.run()
