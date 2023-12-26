@@ -1,3 +1,4 @@
+from time import sleep
 import server
 import threading
 import json
@@ -24,5 +25,22 @@ for network_name in settings['NETWORKS']:
     all_network.append(network)
     dict_network.update({network_name : network})
 
-# SERVER = threading.Thread(target=server.NETWORK().main)
-dict_network["SERVER1"].run()
+# 
+# dict_network["SERVER1"].run()
+THREAD_MAIN = threading.Thread(target=dict_network["SERVER_MAIN"].run)
+THREAD_SYSTEM = threading.Thread(target=dict_network["SYSTEM"].run)
+
+THREAD_SYSTEM.start()
+THREAD_MAIN.start()
+
+
+def stopable():
+    while dict_network["SYSTEM"].other_info.get('run') != 'false':
+        sleep(1)
+
+    for network in all_network:
+        network.shutdown_server()
+
+
+STOPABLE = threading.Thread(target=stopable)
+STOPABLE.start()

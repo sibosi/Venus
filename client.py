@@ -1,7 +1,7 @@
+import socket
 import requests
 import os
-
-root_dir = os.path.dirname(__file__)
+from paths import *
 
 
 class CLIENT():
@@ -11,14 +11,27 @@ class CLIENT():
         if PORT == None:
             PORT = int(input('Enter the PORT: '))
         
+        if IP == '0.0.0.0':
+            IP = socket.gethostbyname_ex(socket.gethostname())[-1][-1]
+
         self.IP = IP
         self.PORT = PORT
     
     def upload_file(self, file_name=None):
         # Készítsen HTTP POST kérést a szerverhez
         if file_name == None:
-            file_name = input('Enter the path of the file to upload: ')
-        file_path=os.path.join(root_dir, file_name)
+            print(f'Upload the file from here: {ROOT_DIR}')
+            print("""Enter a "*" to upload from your profile's rootdir!""")
+            file_name = input('Enter the name of the file to upload: ')
+            if file_name == "*":
+                print(f'Upload the file from here: {PROFILE_ROOT_DIR}')
+                file_name = input('Enter the name of the file to upload: ')
+                file_path=os.path.join(PROFILE_ROOT_DIR, file_name)
+            else:
+                file_path=os.path.join(ROOT_DIR, file_name)
+
+        else:
+            file_path=os.path.join(ROOT_DIR, file_name)
 
 
         request = requests.post(f'http://{self.IP}:{self.PORT}/upload', files={'file': open(file_path, 'rb')})
@@ -33,6 +46,16 @@ class CLIENT():
             print('A fájl feltöltése sikertelen.')
             return False
     
+    def upload_directory(self, directory_path=None):
+        if directory_path == None:
+            directory_path = input('Enter the path of the dir to upload: ')
+        for file in os.listdir(directory_path):
+            try:
+                self.upload_file(file)
+            except:
+                self.chat(f'The file {file} not able to upload.')
+
+
     def chat(self, message=None):
         import socket
 
@@ -55,7 +78,7 @@ class CLIENT():
         response = client_socket.recv(1024)
 
         # A válasz kiírása
-        print(response.decode())
+        print(response.decode().split('\n')[0])
 
         # A kapcsolat lezárása
         client_socket.close()
@@ -72,5 +95,5 @@ class CLIENT():
 
 
 if __name__ == '__main__':
-    client1 = CLIENT(PORT=8082)
+    client1 = CLIENT(PORT=8080)
     client1.run()

@@ -1,23 +1,24 @@
-import os
-import socket
-from flask import Flask, render_template, url_for, request
+import os, signal, socket
+from flask import Flask, jsonify, render_template, url_for, request
+from paths import *
 
 
-
-actual_directory = os.path.dirname(__file__)
-page_directory = os.path.join(actual_directory, 'page/')
-os.chdir(actual_directory)
+os.chdir(ROOT_DIR)
 
 class NETWORK():
     hostname = socket.gethostname()
     local_ip = socket.gethostbyname_ex(hostname)[-1][-1]
     localhost = 'localhost'
     
-    def __init__(self, IP=None, PORT=None, upload_directory_name='upload/', network_name='Nothing.', DEBUG = False) -> None:
+    def __init__(self, IP=None, PORT=None, upload_directory_path=UPLOAD_TO_DIR, network_name='Nothing.', DEBUG = False) -> None:
         # print(socket.gethostbyname_ex(NETWORK.hostname))
-        self.app = Flask(__name__, template_folder=page_directory, static_folder=page_directory)
+        self.app = Flask(__name__, template_folder=PAGE_DIR, static_folder=PAGE_DIR)
         if DEBUG: self.app.config['ENV'] = 'production'
         self.app.config['DEBUG'] = DEBUG
+        self.request = request
+
+        self.network_name = network_name
+        self.other_info = {}
 
         if IP == None:
             IP = input('Enter the type of the IP ["localhost" or "local"]: ')
@@ -30,12 +31,16 @@ class NETWORK():
         
         self.IP = IP
         self.PORT = PORT
-        self.upload_directory_name = upload_directory_name
-        self.upload_directory = os.path.join(actual_directory, self.upload_directory_name)
+        self.upload_directory_path = upload_directory_path
         self.setup_routes()  # Hívjuk meg a setup_routes metódust a konstruktorban
 
     def run(self):
         self.app.run(host=self.IP, port=self.PORT)
+    
+    def shutdown_server(self):
+        os.kill(os.getpid(), signal.SIGINT)
+        return jsonify({ "success": True, "message": "Server is shutting down..." })
+
 
     def setup_routes(self):
         # A metóduson belül értelmezzük a route-okat
@@ -47,14 +52,12 @@ class NETWORK():
         @self.app.route('/upload', methods=['POST'])
         def handle_upload():
             # Ellenőrizze, hogy a kérésben van-e fájl
-            if request.files.get('file'):
+            if self.request.files.get('file'):
                 # Olvassa be a fájlt
-                file = request.files['file']
+                file = self.request.files['file']
                 # Mentse a fájlt
                 print()
-                upload_directory = os.path.join(actual_directory, self.upload_directory_name)
-                save_path = os.path.join(upload_directory, file.filename)
-                print(save_path)
+                save_path = os.path.join(self.upload_directory_path, file.filename)
                 file.save(save_path)
                 return 'A fájl sikeresen feltöltésre került.'
             else:
@@ -63,13 +66,24 @@ class NETWORK():
         @self.app.route('/chat', methods=['POST'])
         def handle_chat():
             # Ellenőrizze, hogy a kérésben van-e szöveg
-            if request.headers['Content-Type'] == 'text/plain':
+            if self.request.headers['Content-Type'] == 'text/plain':
                 # A kérésben szöveg van
                 data = request.get_data(as_text=True)
+
+                if data.split(' ')[0] == 'SYSTEM-SET': # (SYSTEM-SET KEY VALUE)
+                    command = data.split(' ')
+                    self.other_info[command[1]] = command[2]
+                    print(self.other_info)
+
                 print(f"Kapott üzenet: {data}")
                 return 'A kérésben {0} van.'.format(data)
             else:
                 return 'A kérésben nem volt szöveg.'
+        
+        @self.app.route('/shutdown')
+        def shutdown():
+            self.shutdown_server()
+            return 'Server shutting down...'
 
 if __name__ == "__main__":
     NETWORK(PORT=8082, IP='0.0.0.0').run()

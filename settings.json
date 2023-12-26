@@ -1,24 +1,34 @@
 {
-    "update logging" : true,
-    "update printing" : false,
-    "check-in after update" : false,
-
-    "NETWORKS" : {
-        "SERVER1" : {
-            "IP" : "0.0.0.0",
-            "PORT" : 8082,
-            "PUBLIC" : true
+    "ANSWERS": {
+        "no": [
+            "n",
+            "no",
+            "nem"
+        ],
+        "yes": [
+            "y",
+            "yes",
+            "igen"
+        ]
+    },
+    "NETWORKS": {
+        "FAST_DROP": {
+            "IP": "0.0.0.0",
+            "PORT": 8081,
+            "PUBLIC": false
         },
-
-        "UPDATE" : {
-            "IP" : "localhost",
-            "PORT" : 8080,
-            "PUBLIC" : false
+        "SERVER_MAIN": {
+            "IP": "0.0.0.0",
+            "PORT": 8082,
+            "PUBLIC": true
+        },
+        "SYSTEM": {
+            "IP": "localhost",
+            "PORT": 8080,
+            "PUBLIC": false
         }
     },
-
-    "ANSWERS" : {
-        "yes" : ["y", "yes", "igen"],
-        "no" : ["n", "no", "nem"]
-    }
+    "check-in after update": false,
+    "update logging": true,
+    "update printing": true
 }
