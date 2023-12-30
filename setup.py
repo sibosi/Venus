@@ -1,6 +1,6 @@
 import os, sys, json
 
-required_directories = ['storage', 'upload']
+required_directories = ['storage', 'upload', 'fast_drop', 'games']
 packages = ["flask"]
 
 
@@ -21,6 +21,7 @@ def setup_packages():
     # Telepítjük a szükséges csomagokat.
     for package in packages:
         os.system("python -m pip install --user {}".format(package))
+        os.system("sudo apt install python3-{}".format(package))
 
 def setup_dirs():
     # Mappák és fájlok létrehozása
