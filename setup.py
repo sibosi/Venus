@@ -1,8 +1,11 @@
 import os, sys, json
+import platform
 
 required_directories = ['storage', 'upload']
 packages = ["flask"]
+no_python_packages = ["sense_hat"]
 
+CURRENT_OS = platform.system()
 
 ROOT_DIR = os.path.dirname(__file__)
 PROFILE_ROOT = os.path.expanduser('~')
@@ -15,12 +18,23 @@ def setup_packages():
         print("A Python 3.6 vagy újabb verziója szükséges.")
         sys.exit(1)
 
-    # Telepítjük a Pip-et.
-    os.system("python -m pip install --user --upgrade pip")
 
-    # Telepítjük a szükséges csomagokat.
-    for package in packages:
-        os.system("python -m pip install --user {}".format(package))
+    if CURRENT_OS in ['Windows', 'Darwin', 'Java']:
+        # Windows, Mac vagy viruális gép esetén
+        # Telepítjük a Pip-et.
+        os.system("python -m pip install --user --upgrade pip")
+
+        # Telepítjük a szükséges csomagokat.
+        for package in packages:
+            os.system("python -m pip install --user {}".format(package))
+    elif CURRENT_OS == "Linux":
+        # Linux esetén
+        for package in packages:
+            os.system("sudo apt-get install python3-{}".format(package))
+        for package in no_python_packages:
+            os.system("sudo apt-get install {}".format(package))
+    else:
+        print('OS not supported:', CURRENT_OS)
 
 def setup_dirs():
     # Mappák és fájlok létrehozása

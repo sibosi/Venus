@@ -95,5 +95,5 @@ class CLIENT():
 
 
 if __name__ == '__main__':
-    client1 = CLIENT(PORT=8080)
+    client1 = CLIENT()
     client1.run()
