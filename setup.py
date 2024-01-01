@@ -1,7 +1,7 @@
 import os, sys, json
 
 required_directories = ['storage', 'upload', 'fast_drop', 'games']
-packages = ["flask"]
+packages = ["flask", 'flask-socketio']
 
 
 ROOT_DIR = os.path.dirname(__file__)

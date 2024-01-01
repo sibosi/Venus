@@ -28,6 +28,16 @@
             "PUBLIC": false
         }
     },
+    "PATHS": {
+        "DROP_FROM": "c:\\Users\\sibos\\Documents\\GitHub\\Venus\\fast_drop",
+        "DROP_TO": "C:\\Users\\sibos\\drop",
+        "PAGE": "c:\\Users\\sibos\\Documents\\GitHub\\Venus\\page",
+        "PROFILE_ROOT": "C:\\Users\\sibos",
+        "ROOT": "c:\\Users\\sibos\\Documents\\GitHub\\Venus",
+        "STORAGE": "c:\\Users\\sibos\\Documents\\GitHub\\Venus\\storage",
+        "UPLOAD_FROM": "c:\\Users\\sibos\\Documents\\GitHub\\Venus\\upload",
+        "UPLOAD_TO": "c:\\Users\\sibos\\Documents\\GitHub\\Venus\\upload"
+    },
     "check-in after update": false,
     "update logging": true,
     "update printing": true
