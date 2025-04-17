@@ -1,4 +1,6 @@
+from time import sleep
 from paths import *
+import available_status
 import server, client
 import os, json
 
@@ -7,9 +9,8 @@ with open('settings.json', 'r') as file:
     settings = json.load(file)
 
 
-def drop_client():
-    CLIENT = client.CLIENT(settings["NETWORKS"]["FAST_DROP"]["IP"],
-                            settings["NETWORKS"]["FAST_DROP"]["PORT"])
+def drop_client(IP : str):
+    CLIENT = client.CLIENT(IP, settings["NETWORKS"]["FAST_DROP"]["PORT"])
     try:
         CLIENT.chat('Client avaiable')
     except:
@@ -28,7 +29,13 @@ def drop_server():
     SERVER.run()
 
 def main():
-    if drop_client() == 'go_server':
-        drop_server()
+    available = available_status.AvailabeGroup()
+    available.joinLiveGroup(data_limit=1024, show_message=True)
+    for _ in range(10):
+        if len(available.IPGroup) > 0:
+            drop_client(available.IPGroup[0])
+        sleep(0.5)
+    drop_server()
+    available.active = False
 
 main()
